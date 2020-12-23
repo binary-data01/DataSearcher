@@ -137,10 +137,16 @@ class MainWindow(QMainWindow):
         self.searchResult = []
         self._translate = QCoreApplication.translate
         self.foundItemSignal.connect(self.UpdateFoundLable)
-        QMessageBox.about(self,"","Welcome to Yuke Sports BOM Search System")
+        msgBox = QMessageBox(self)
+        msgBox.setWindowTitle("Welcome")
+        msgBox.setText("Welcome to Yuke Sports BOM Search System")
+        msgBox.addButton(QMessageBox.Ok)
+        msgBox.button(QMessageBox.Ok).hide()
+        msgBox.exec()
 
     def OpenFileButton(self):
-        fileName, filetype = QFileDialog.getOpenFileName(self, "选取文件", '', "Text Files (*.csv)")
+        # fileName, filetype = QFileDialog.getOpenFileName(self, "选取文件", '', "Text Files (*.csv)")
+        fileName, filetype = QFileDialog.getOpenFileName(self, "Select file", '', "Text Files (*.csv)")
         if fileName == "":
             return
         self.dataSearcher = DataSearcher(fileName, self.foundItemSignal)
@@ -182,13 +188,20 @@ class MainWindow(QMainWindow):
                     result = result + rowVal + '\t'
                 result += '\n'
             pyperclip.copy(result)
-            QMessageBox.about(self,"","复制成功")
+            #QMessageBox.about(self,"","复制成功")
+
+            msgBox = QMessageBox(self)
+            msgBox.setWindowTitle("Information")
+            msgBox.setText("Copy success")
+            msgBox.addButton(QMessageBox.Ok)
+            msgBox.button(QMessageBox.Ok).hide()
+            msgBox.exec()
             print("Copy result to clip")
         pass
 
     def SaveResult(self):
-        fileName, filetype = QFileDialog.getSaveFileName(self, "文件保存", '', "Text Files (*.csv)")  
-
+        #fileName, filetype = QFileDialog.getSaveFileName(self, "文件保存", '', "Text Files (*.csv)")  
+        fileName, filetype = QFileDialog.getSaveFileName(self, "Save file", '', "Text Files (*.csv)")  
         if fileName == "":
             return
 
@@ -216,7 +229,8 @@ class MainWindow(QMainWindow):
         pass
 
     def UpdateFoundLable(self, size):
-        self.ui.FoundLable.setText(self._translate("Form", "共" + str(size) + "个型号"))
+        # self.ui.FoundLable.setText(self._translate("Form", "共" + str(size) + "个型号"))
+        self.ui.FoundLable.setText(self._translate("Form", "Found " + str(size) + " items"))
         pass
 
 if __name__ == "__main__":
